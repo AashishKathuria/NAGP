@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  nagp-asp-microservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"

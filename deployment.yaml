@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nagpaspmicroservice-deployment
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: nagpaspmicroservice-pod
+  template:
+    metadata:
+      labels:
+        app: nagpaspmicroservice-pod
+    spec:
+      containers:
+      - name: nagpaspmicroservice-container
+        image: aashishkathuria/aashishnagp:v0
+        imagePullPolicy: Always
+        env:
+          - name: HOST
+            valueFrom:
+              configMapKeyRef:
+                name: appsettings
+                key: HOST
+          - name: SQL_USER
+            valueFrom:
+              configMapKeyRef:
+                name: appsettings
+                key: SQL_USER
+          - name: PORT
+            valueFrom:
+              configMapKeyRef:
+                name: appsettings
+                key: PORT
+          - name: SQL_PASSWORD
+            valueFrom:
+             secretKeyRef:
+              name: mssql-secret
+              key: SQL_PASSWORD
+          - name: SQL_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: appsettings
+                key: SQL_DATABASE
+        resources:
+          limits:
+            cpu: 125m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        ports:
+        - containerPort: 80

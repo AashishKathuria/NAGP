@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  nagp-asp-microservice:
+    image: ${DOCKER_REGISTRY-}nagpaspmicroservice
+    build:
+      context: .
+      dockerfile: NAGP-ASP-Microservice\Dockerfile
